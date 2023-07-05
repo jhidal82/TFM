@@ -8,12 +8,22 @@ import matplotlib.pyplot as plt
 import folium
 from streamlit_folium import st_folium
 import pandas as pd
+import zipfile
 
 
 def prediccion_precio():    
     df = pd.read_csv("df_streamlit.csv",sep=",") # lo usamos para generar los campos 
-    with open("modelo.pkl", 'rb') as f:
-        modelo_cargado = pickle.load(f)
+           
+    # Ruta del archivo comprimido
+    ruta_zip = "modelo.zip"
+
+    # Nombre del archivo dentro de la carpeta comprimida
+    nombre_archivo = "modelo.pkl"
+
+    # Extraer el archivo modelo.pkl de la carpeta comprimida
+    with zipfile.ZipFile(ruta_zip, 'r') as archivo_zip:
+        with archivo_zip.open(nombre_archivo) as archivo:
+            modelo_cargado = pickle.load(archivo)
 
     # interfaz de usuario
     st.title('Predicción de precios de vehículos')
